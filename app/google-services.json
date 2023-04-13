@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "44420825150",
+    "firebase_url": "https://premierleag-2ec14-default-rtdb.firebaseio.com",
+    "project_id": "premierleag-2ec14",
+    "storage_bucket": "premierleag-2ec14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44420825150:android:dd35ab04ea0674cd23d16f",
+        "android_client_info": {
+          "package_name": "com.codingtester.textrecognizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44420825150-183qipdadb8ufn7m4d8e558m223amcqd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8P0pxN88WPqLHxMVZnb4tpTm7mJYo6FY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44420825150-183qipdadb8ufn7m4d8e558m223amcqd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".NoteApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +16,11 @@
         android:theme="@style/Theme.TextRecognizer"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="com.codingtester.textrecognizer.view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

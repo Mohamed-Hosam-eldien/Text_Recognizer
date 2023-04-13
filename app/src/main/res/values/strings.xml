@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Text Recognizer</string>
+    <string name="create_an_account">create an account</string>
+    <string name="log_in">Log In</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
 </resources>
