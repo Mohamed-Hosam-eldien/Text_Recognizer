@@ -1,7 +1,11 @@
 package com.codingtester.textrecognizer.data.pojo
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Note(
-    private val id: Int,
-    private val text: String,
-    private val dateInMilliSecond: Double
-)
+    val id: Int,
+    val title: String,
+    val dateInMilliSecond: Double
+) : Parcelable

@@ -23,6 +23,8 @@
         android:id="@+id/recyclerBoard"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
+        tools:listitem="@layout/board_layout"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_height="wrap_content"/>
 
     <View

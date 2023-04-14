@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_noteFragment_to_reviewFragment"
             app:destination="@id/reviewFragment" />
+        <argument
+            android:name="board"
+            app:argType="com.codingtester.textrecognizer.data.pojo.Board" />
     </fragment>
 
     <action
