@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.codingtester.textrecognizer.view.LoginFragment"
+        android:name="com.codingtester.textrecognizer.view.register.LoginFragment"
         android:label="Log In"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.codingtester.textrecognizer.view.RegisterFragment"
+        android:name="com.codingtester.textrecognizer.view.register.RegisterFragment"
         android:label="Create Account"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.codingtester.textrecognizer.view.WelcomeFragment"
+        android:name="com.codingtester.textrecognizer.view.register.WelcomeFragment"
         android:label="Welcome in text recognizer"
         tools:layout="@layout/fragment_welcome">
         <action

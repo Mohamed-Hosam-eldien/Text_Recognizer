@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer.view
+package com.codingtester.textrecognizer.view.register
 
 import android.os.Bundle
 import android.view.LayoutInflater

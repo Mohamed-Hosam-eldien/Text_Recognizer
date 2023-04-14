@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer.view
+package com.codingtester.textrecognizer.view.register
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,32 +10,29 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.codingtester.textrecognizer.R
-import com.codingtester.textrecognizer.data.pojo.User
-import com.codingtester.textrecognizer.databinding.FragmentRegisterBinding
-import com.codingtester.textrecognizer.utils.Constants
-import com.google.firebase.auth.FirebaseUser
+import com.codingtester.textrecognizer.databinding.FragmentLoginBinding
+import com.codingtester.textrecognizer.view.MainActivity
+import com.codingtester.textrecognizer.view.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
+class LoginFragment : Fragment() {
 
-    private lateinit var binding: FragmentRegisterBinding
-    private val viewModel by viewModels<MainViewModel>()
+    private lateinit var binding: FragmentLoginBinding
+    private val viewModel by viewModels<RegisterViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val fragView = inflater.inflate(R.layout.fragment_register, container, false)
-        binding = FragmentRegisterBinding.bind(fragView)
+        val view = inflater.inflate(R.layout.fragment_login, container, false)
+        binding = FragmentLoginBinding.bind(view)
 
-        binding.btnCreateAccount.setOnClickListener {
-            signUpNewUser()
-        }
+        binding.btnLogin.setOnClickListener { login() }
 
-        viewModel.signupLiveData.observe(viewLifecycleOwner) {
+        viewModel.loginLiveData.observe(viewLifecycleOwner) {
             if(it != null) {
                 requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
                 requireActivity().finish()
@@ -43,17 +40,15 @@ class RegisterFragment : Fragment() {
                 Toast.makeText(requireContext(), "Something wrong! please try again", Toast.LENGTH_SHORT).show()
             }
         }
-
         return binding.root
     }
 
-    private fun signUpNewUser() {
-        val name = binding.edtName.text.toString()
+    private fun login() {
         val email = binding.edtEmail.text.toString()
         val pass = binding.edtPass.text.toString()
 
         lifecycleScope.launch {
-            viewModel.signup(name, email, pass)
+            viewModel.login(email, pass)
         }
     }
 }

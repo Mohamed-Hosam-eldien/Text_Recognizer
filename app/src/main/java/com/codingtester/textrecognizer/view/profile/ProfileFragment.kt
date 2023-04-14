@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer
+package com.codingtester.textrecognizer.view.profile
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -8,16 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.databinding.FragmentProfileBinding
-import com.codingtester.textrecognizer.view.LoginActivity
-import com.codingtester.textrecognizer.view.MainViewModel
+import com.codingtester.textrecognizer.view.register.LoginActivity
+import com.codingtester.textrecognizer.view.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<RegisterViewModel>()
 
 
     override fun onCreateView(

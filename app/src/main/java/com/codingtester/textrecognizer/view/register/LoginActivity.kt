@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer.view
+package com.codingtester.textrecognizer.view.register
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,13 +9,15 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.codingtester.textrecognizer.R
+import com.codingtester.textrecognizer.view.MainActivity
+import com.codingtester.textrecognizer.view.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<RegisterViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

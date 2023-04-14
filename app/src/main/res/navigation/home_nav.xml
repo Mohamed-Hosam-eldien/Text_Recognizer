@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/boardFragment"
-        android:name="com.codingtester.textrecognizer.BoardFragment"
+        android:name="com.codingtester.textrecognizer.view.board.BoardFragment"
         android:label="Your Boards"
         tools:layout="@layout/fragment_board">
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/noteFragment"
-        android:name="com.codingtester.textrecognizer.NoteFragment"
+        android:name="com.codingtester.textrecognizer.view.note.NoteFragment"
         tools:layout="@layout/fragment_note">
         <action
             android:id="@+id/action_noteFragment_to_reviewFragment"
@@ -34,13 +34,13 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.codingtester.textrecognizer.ProfileFragment"
+        android:name="com.codingtester.textrecognizer.view.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/reviewFragment"
-        android:name="com.codingtester.textrecognizer.ReviewFragment"
+        android:name="com.codingtester.textrecognizer.view.review.ReviewFragment"
         android:label="Review Text"
         tools:layout="@layout/fragment_review" />
 </navigation>

@@ -1,7 +1,9 @@
 package com.codingtester.textrecognizer.data.di
 
-import com.codingtester.textrecognizer.data.repo.IMainRepository
-import com.codingtester.textrecognizer.data.repo.MainRepositoryImpl
+import com.codingtester.textrecognizer.data.repo.main.DataRepositoryImpl
+import com.codingtester.textrecognizer.data.repo.main.IDataRepository
+import com.codingtester.textrecognizer.data.repo.register.IRegisterRepository
+import com.codingtester.textrecognizer.data.repo.register.RegisterRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -16,5 +18,8 @@ object AppModule {
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
-    fun provideRepository(repoImpl: MainRepositoryImpl): IMainRepository = repoImpl
+    fun provideRegisterRepository(repoImpl: RegisterRepositoryImpl): IRegisterRepository = repoImpl
+
+    @Provides
+    fun provideDataRepository(repoImpl: DataRepositoryImpl): IDataRepository = repoImpl
 }

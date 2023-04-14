@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer.data.repo
+package com.codingtester.textrecognizer.data.repo.register
 
 import com.codingtester.textrecognizer.utils.await
 import com.google.firebase.auth.FirebaseAuth
@@ -6,9 +6,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import javax.inject.Inject
 
-class MainRepositoryImpl @Inject constructor(
+class RegisterRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
-): IMainRepository {
+): IRegisterRepository {
 
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser

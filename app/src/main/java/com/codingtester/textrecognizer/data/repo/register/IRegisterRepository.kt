@@ -1,8 +1,8 @@
-package com.codingtester.textrecognizer.data.repo
+package com.codingtester.textrecognizer.data.repo.register
 
 import com.google.firebase.auth.FirebaseUser
 
-interface IMainRepository {
+interface IRegisterRepository {
 
     val currentUser: FirebaseUser?
     suspend fun login(email: String, password: String): FirebaseUser?
