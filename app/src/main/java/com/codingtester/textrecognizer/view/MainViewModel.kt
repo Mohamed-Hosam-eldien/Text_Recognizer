@@ -26,6 +26,7 @@ class MainViewModel @Inject constructor(
     init {
         if(mainRepository.currentUser != null) {
             mutableLogin.value = mainRepository.currentUser
+
         }
     }
 

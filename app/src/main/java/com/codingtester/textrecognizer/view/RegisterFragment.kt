@@ -37,7 +37,6 @@ class RegisterFragment : Fragment() {
 
         viewModel.signupLiveData.observe(viewLifecycleOwner) {
             if(it != null) {
-                setCurrentUserData(it)
                 requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
                 requireActivity().finish()
             } else {
@@ -46,10 +45,6 @@ class RegisterFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun setCurrentUserData(user: FirebaseUser) {
-        Constants.currentUser = User(user.uid, user.displayName, user.email)
     }
 
     private fun signUpNewUser() {

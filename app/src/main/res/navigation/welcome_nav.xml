@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="com.codingtester.textrecognizer.view.WelcomeFragment"
-        android:label="Welcome In Shopingo"
+        android:label="Welcome in text recognizer"
         tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_welcomeFragment_to_registerFragment"

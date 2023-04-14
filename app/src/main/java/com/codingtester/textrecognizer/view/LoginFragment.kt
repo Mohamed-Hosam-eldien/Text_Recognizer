@@ -35,7 +35,6 @@ class LoginFragment : Fragment() {
 
         viewModel.loginLiveData.observe(viewLifecycleOwner) {
             if(it != null) {
-                setCurrentUserData(it)
                 requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
                 requireActivity().finish()
             } else {
@@ -43,11 +42,6 @@ class LoginFragment : Fragment() {
             }
         }
         return binding.root
-    }
-
-
-    private fun setCurrentUserData(user: FirebaseUser) {
-        Constants.currentUser = User(user.uid, user.displayName, user.email)
     }
 
     private fun login() {

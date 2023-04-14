@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav"
+    app:startDestination="@id/boardFragment">
+
+    <fragment
+        android:id="@+id/boardFragment"
+        android:name="com.codingtester.textrecognizer.BoardFragment"
+        android:label="Your Boards"
+        tools:layout="@layout/fragment_board">
+        <action
+            android:id="@+id/action_boardFragment_to_noteFragment"
+            app:destination="@id/noteFragment" />
+        <action
+            android:id="@+id/action_boardFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteFragment"
+        android:name="com.codingtester.textrecognizer.NoteFragment"
+        tools:layout="@layout/fragment_note">
+        <action
+            android:id="@+id/action_noteFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_to_profileFragment"
+        app:popUpTo="@id/profileFragment"
+        app:popUpToInclusive="true"
+        app:destination="@id/profileFragment" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.codingtester.textrecognizer.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.codingtester.textrecognizer.ReviewFragment"
+        android:label="Review Text"
+        tools:layout="@layout/fragment_review" />
+</navigation>
