@@ -34,10 +34,6 @@ class NoteAdapter(private val onClickBoard: OnClickNote): RecyclerView.Adapter<N
         } else {
             textFormat(note.title)
         }
-
-        holder.itemView.setOnClickListener {
-            onClickBoard.onClickToNote(note)
-        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

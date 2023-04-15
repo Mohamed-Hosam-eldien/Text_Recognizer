@@ -53,6 +53,7 @@ class NoteFragment : Fragment(), OnClickNote {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currentBoard = args.board
+        dataViewModel.getNotesByBoardName(userViewModel.currentUser?.uid!!, currentBoard.title)
     }
 
     override fun onCreateView(
@@ -77,7 +78,6 @@ class NoteFragment : Fragment(), OnClickNote {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        dataViewModel.getNotesByBoardName(userViewModel.currentUser?.uid!!, currentBoard.title)
         dataViewModel.notesLiveData.observe(viewLifecycleOwner) { notes ->
             currentBoard.noteList = notes
             noteAdapter.updatePopularList(notes, true)
@@ -99,24 +99,30 @@ class NoteFragment : Fragment(), OnClickNote {
     }
 
     private fun changeAdapterStyle() {
-        if(isLinear) {
+        if (isLinear) {
             isLinear = false
             binding.recyclerNotes.apply {
                 noteAdapter.updatePopularList(currentBoard.noteList, false)
                 adapter = noteAdapter
                 layoutManager = GridLayoutManager(requireContext(), 2)
             }
+            binding.btnStyle.setImageResource(R.drawable.baseline_linear_24)
         } else {
             isLinear = true
             binding.recyclerNotes.apply {
                 noteAdapter.updatePopularList(currentBoard.noteList, true)
                 adapter = noteAdapter
                 layoutManager = LinearLayoutManager(requireContext())
+                binding.btnStyle.setImageResource(R.drawable.baseline_grid_view_24)
             }
         }
     }
 
-    override fun onClickToNote(note: Note) {
+    override fun onClickToDelete(id: Long) {
+
+    }
+
+    override fun onClickToSaveWord(note: Note) {
 
     }
 
@@ -141,20 +147,9 @@ class NoteFragment : Fragment(), OnClickNote {
         }
     }
 
-    private fun navigateToReviewFragment(text: String) {
-        if(text.isBlank() || text.isEmpty()) {
-            Toast.makeText(requireContext(), "Failed to recognize text! try again", Toast.LENGTH_SHORT).show()
-        } else {
-            val bundle = Bundle()
-            bundle.putString("textAfterRec", text)
-            bundle.putString("boardName", currentBoard.title)
-            findNavController().navigate(R.id.action_noteFragment_to_reviewFragment, bundle)
-        }
-    }
-
     private fun getTextFromBitmap(imageBitmap: Bitmap) {
         val textRecognizer = TextRecognizer.Builder(requireContext()).build()
-        if (! textRecognizer.isOperational) {
+        if (!textRecognizer.isOperational) {
             Toast.makeText(requireContext(), "unable to recognize text!", Toast.LENGTH_SHORT).show()
         } else {
             val frame = Frame.Builder().setBitmap(imageBitmap).build()
@@ -169,6 +164,21 @@ class NoteFragment : Fragment(), OnClickNote {
         }
     }
 
+    private fun navigateToReviewFragment(text: String) {
+        if (text.isBlank() || text.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                "Failed to recognize text! try again",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            val bundle = Bundle()
+            bundle.putString("textAfterRec", text)
+            bundle.putString("boardName", currentBoard.title)
+            findNavController().navigate(R.id.action_noteFragment_to_reviewFragment, bundle)
+        }
+    }
+
     private fun requestCameraPermission() {
         ActivityCompat.requestPermissions(
             requireActivity(), arrayOf(
@@ -178,7 +188,10 @@ class NoteFragment : Fragment(), OnClickNote {
     }
 
     private fun isCameraPermissionGranted(): Boolean {
-        return (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA)
+        return (ContextCompat.checkSelfPermission(
+            requireContext(),
+            android.Manifest.permission.CAMERA
+        )
                 == PackageManager.PERMISSION_GRANTED)
     }
 

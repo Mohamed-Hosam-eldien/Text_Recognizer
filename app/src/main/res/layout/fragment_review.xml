@@ -29,18 +29,23 @@
         android:autofillHints="@null"
         tools:ignore="LabelFor,TextFields" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:weightSum="3"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
+
+        <ProgressBar
+            android:id="@+id/reviewProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/clickSave"
             android:layout_width="match_parent"
-            android:layout_weight="1"
             android:layout_height="match_parent"
             app:cardUseCompatPadding="true"
             app:cardCornerRadius="8dp"
@@ -74,7 +79,7 @@
 
         </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 

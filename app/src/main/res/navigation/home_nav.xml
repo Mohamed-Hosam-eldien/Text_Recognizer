@@ -45,5 +45,12 @@
         android:id="@+id/reviewFragment"
         android:name="com.codingtester.textrecognizer.view.review.ReviewFragment"
         android:label="Review Text"
-        tools:layout="@layout/fragment_review" />
+        tools:layout="@layout/fragment_review" >
+        <action
+            android:id="@+id/action_reviewFragment_to_noteFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/noteFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/noteFragment" />
+    </fragment>
 </navigation>

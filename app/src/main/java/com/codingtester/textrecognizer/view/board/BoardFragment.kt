@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.databinding.FragmentBoardBinding
 import com.codingtester.textrecognizer.view.DataViewModel
@@ -22,13 +21,18 @@ class BoardFragment : Fragment(), OnClickBoard {
     private val userViewModel by viewModels<RegisterViewModel>()
     private val boardAdapter by lazy { BoardAdapter(this) }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        dataViewModel.getAllBoards(userViewModel.currentUser?.uid!!)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_board, container, false)
-        binding = FragmentBoardBinding.bind(view)
+
+        binding = FragmentBoardBinding.inflate(inflater, container, false)
 
         binding.btnAddBoard.setOnClickListener { showBoardDialog() }
 
@@ -38,15 +42,14 @@ class BoardFragment : Fragment(), OnClickBoard {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dataViewModel.getAllBoards(userViewModel.currentUser?.uid!!)
+        dataViewModel.boardsLiveData.observe(viewLifecycleOwner) { boards ->
+            boardAdapter.updatePopularList(boards)
+        }
 
         binding.recyclerBoard.apply {
             adapter = boardAdapter
         }
 
-        dataViewModel.boardsLiveData.observe(viewLifecycleOwner) { boards ->
-            boardAdapter.updatePopularList(boards)
-        }
     }
 
     private fun showBoardDialog() {

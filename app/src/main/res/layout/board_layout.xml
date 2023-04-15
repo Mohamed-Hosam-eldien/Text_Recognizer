@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="185dp">
@@ -27,31 +26,34 @@
                 android:src="@drawable/board_"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txtBoardName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_centerInParent="true"
-                android:layout_margin="38sp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="My Board" />
+                android:layout_margin="38sp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#FFEE5A"
-                android:layout_below="@id/txtBoardName"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
-                android:text="12/2/20023" />
+                <TextView
+                    android:id="@+id/txtBoardName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="My Board"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/2/20023"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#FFEE5A" />
+
+            </LinearLayout>
 
         </RelativeLayout>
-
 
     </androidx.cardview.widget.CardView>
 

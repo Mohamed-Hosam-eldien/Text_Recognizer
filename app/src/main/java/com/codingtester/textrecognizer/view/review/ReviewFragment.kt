@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.data.pojo.Note
 import com.codingtester.textrecognizer.databinding.FragmentReviewBinding
@@ -51,9 +52,14 @@ class ReviewFragment : Fragment() {
     }
 
     private fun saveNoteToFirebase() {
+        binding.clickSave.visibility = View.GONE
+        binding.reviewProgressBar.visibility = View.VISIBLE
         val note = Note(System.currentTimeMillis(), binding.edtText.text.toString(), System.currentTimeMillis())
         dataViewModel.addNewNote(userViewModel.currentUser?.uid!!, boardName , note)
-        Toast.makeText(requireContext(), "Note has been added successfully", Toast.LENGTH_SHORT).show()
+
+        findNavController().popBackStack(R.id.reviewFragment, true)
+
+        Toast.makeText(requireContext(), "Note has been added successfully", Toast.LENGTH_LONG).show()
     }
 
 }
