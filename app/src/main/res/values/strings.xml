@@ -11,4 +11,5 @@
     <string name="add_new_board">Add New Board</string>
     <string name="board_name">Board Name..</string>
     <string name="add">Add</string>
+    <string name="save">Save Note</string>
 </resources>

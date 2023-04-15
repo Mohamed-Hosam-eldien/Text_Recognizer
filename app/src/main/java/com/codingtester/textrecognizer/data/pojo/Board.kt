@@ -8,5 +8,5 @@ data class Board(
     val id: Long=0,
     val title: String="",
     val dateInMilliSecond: Long=0,
-    val noteList: List<Note> = emptyList()
+    var noteList: List<Note> = emptyList()
 ): Parcelable

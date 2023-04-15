@@ -5,16 +5,55 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.codingtester.textrecognizer.R
+import com.codingtester.textrecognizer.data.pojo.Note
+import com.codingtester.textrecognizer.databinding.FragmentReviewBinding
+import com.codingtester.textrecognizer.view.DataViewModel
+import com.codingtester.textrecognizer.view.RegisterViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ReviewFragment : Fragment() {
+
+    private val dataViewModel by viewModels<DataViewModel>()
+    private val userViewModel by viewModels<RegisterViewModel>()
+
+    private lateinit var binding: FragmentReviewBinding
+    private var text = ""
+    private var boardName = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        text = arguments?.getString("textAfterRec") ?: ""
+        boardName = arguments?.getString("boardName") ?: ""
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_review, container, false)
+    ): View {
+        binding = FragmentReviewBinding.bind(
+            inflater.inflate(
+                R.layout.fragment_review, container, false
+            )
+        )
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.edtText.setText(text)
+
+        binding.clickSave.setOnClickListener { saveNoteToFirebase() }
+    }
+
+    private fun saveNoteToFirebase() {
+        val note = Note(System.currentTimeMillis(), binding.edtText.text.toString(), System.currentTimeMillis())
+        dataViewModel.addNewNote(userViewModel.currentUser?.uid!!, boardName , note)
+        Toast.makeText(requireContext(), "Note has been added successfully", Toast.LENGTH_SHORT).show()
     }
 
 }

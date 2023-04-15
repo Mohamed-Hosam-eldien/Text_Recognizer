@@ -49,6 +49,28 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             })
     }
 
+    override suspend fun getNotesByBoardName(
+        userId: String,
+        boardName: String,
+        liveData: MutableLiveData<List<Note>>
+    ) {
+        databaseRef
+            .child(userId)
+            .child(Constants.BOARDS)
+            .child(boardName)
+            .child(Constants.NOTES)
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val allNotes: List<Note> = snapshot.children.map { data ->
+                        data.getValue(Note::class.java)!!
+                    }
+                    liveData.postValue(allNotes)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+    }
+
     override suspend fun deleteBoard() {}
 
     override suspend fun deleteNote() {}

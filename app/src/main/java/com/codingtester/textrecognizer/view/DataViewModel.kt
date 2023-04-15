@@ -20,6 +20,9 @@ class DataViewModel @Inject constructor(
     private val mutableBoards: MutableLiveData<List<Board>> = MutableLiveData()
     val boardsLiveData: LiveData<List<Board>> = mutableBoards
 
+    private val mutableNotes: MutableLiveData<List<Note>> = MutableLiveData()
+    val notesLiveData: LiveData<List<Note>> = mutableNotes
+
     fun addNewBoard(userId: String, board: Board) = viewModelScope.launch {
         dataRepo.addNewBoard(userId, board)
     }
@@ -32,4 +35,7 @@ class DataViewModel @Inject constructor(
         dataRepo.getAllBoards(userId, mutableBoards)
     }
 
+    fun getNotesByBoardName(userId: String, boardName: String) = viewModelScope.launch {
+        dataRepo.getNotesByBoardName(userId, boardName, mutableNotes)
+    }
 }

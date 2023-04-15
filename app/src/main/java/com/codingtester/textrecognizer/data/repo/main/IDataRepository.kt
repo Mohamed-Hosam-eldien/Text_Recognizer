@@ -12,6 +12,8 @@ interface IDataRepository {
 
     suspend fun getAllBoards(userId: String, liveData: MutableLiveData<List<Board>>)
 
+    suspend fun getNotesByBoardName(userId: String, boardName: String, liveData: MutableLiveData<List<Note>>)
+
     suspend fun deleteBoard()
 
     suspend fun deleteNote()
