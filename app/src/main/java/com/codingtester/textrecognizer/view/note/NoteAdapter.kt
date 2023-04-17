@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.codingtester.textrecognizer.R
@@ -34,10 +35,20 @@ class NoteAdapter(private val onClickBoard: OnClickNote): RecyclerView.Adapter<N
         } else {
             textFormat(note.title)
         }
+
+        holder.clickToSave?.setOnClickListener {
+            onClickBoard.onClickToSaveFile(note)
+        }
+
+        holder.clickToDelete?.setOnClickListener {
+            onClickBoard.onClickToDelete(note.id)
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtNoteTitle: TextView = itemView.findViewById(R.id.txtNoteTitle)
+        val clickToSave: CardView? = itemView.findViewById(R.id.clickSaveToWord)
+        val clickToDelete: CardView? = itemView.findViewById(R.id.clickDelete)
     }
 
     fun updatePopularList(newBoards: List<Note>, isLinear_ : Boolean) {

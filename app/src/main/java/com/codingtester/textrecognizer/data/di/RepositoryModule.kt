@@ -1,7 +1,7 @@
 package com.codingtester.textrecognizer.data.di
 
-import com.codingtester.textrecognizer.data.repo.main.DataRepositoryImpl
-import com.codingtester.textrecognizer.data.repo.main.IDataRepository
+import com.codingtester.textrecognizer.data.repo.data.DataRepositoryImpl
+import com.codingtester.textrecognizer.data.repo.data.IDataRepository
 import com.codingtester.textrecognizer.data.repo.register.IRegisterRepository
 import com.codingtester.textrecognizer.data.repo.register.RegisterRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth

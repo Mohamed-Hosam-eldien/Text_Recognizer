@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer.data.repo.main
+package com.codingtester.textrecognizer.data.repo.data
 
 import androidx.lifecycle.MutableLiveData
 import com.codingtester.textrecognizer.data.pojo.Board
@@ -73,5 +73,24 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
 
     override suspend fun deleteBoard() {}
 
-    override suspend fun deleteNote() {}
+    override suspend fun deleteNote(boardName: String, userId: String, noteId: Long) {
+        databaseRef
+            .child(userId)
+            .child(Constants.BOARDS)
+            .child(boardName)
+            .child(Constants.NOTES)
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach {
+                        val note: Note? = it.getValue(Note::class.java)
+                        if(note?.id == noteId) {
+                            it.ref.removeValue()
+                            return@forEach
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+
+            })
+    }
 }

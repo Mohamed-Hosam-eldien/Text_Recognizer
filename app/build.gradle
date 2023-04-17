@@ -51,6 +51,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'com.google.firebase:firebase-auth-ktx:21.2.0'
     implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -74,6 +75,15 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
 
     // lotti
-    def lottieVersion = "3.6.1"
+    def lottieVersion = "6.0.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+    implementation group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '3.1.0'
+    implementation 'javax.xml.stream:stax-api:1.0'
+    implementation 'com.fasterxml:aalto-xml:1.2.2'
+
+    // save to word file
+//    implementation 'org.apache.poi:poi-ooxml:4.1.2'
+//    implementation 'javax.xml.stream:stax-api:1.0'
 }

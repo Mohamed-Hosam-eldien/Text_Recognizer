@@ -13,5 +13,7 @@
     <string name="add">Add</string>
     <string name="save">Save Note</string>
     <string name="delete">Delete</string>
-    <string name="word_file">word file</string>
+    <string name="word_file">Word file</string>
+    <string name="file_name">File Name…</string>
+    <string name="save_file">Save File</string>
 </resources>

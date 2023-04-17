@@ -4,5 +4,5 @@ import com.codingtester.textrecognizer.data.pojo.Note
 
 interface OnClickNote {
     fun onClickToDelete(id: Long)
-    fun onClickToSaveWord(note: Note)
+    fun onClickToSaveFile(note: Note)
 }

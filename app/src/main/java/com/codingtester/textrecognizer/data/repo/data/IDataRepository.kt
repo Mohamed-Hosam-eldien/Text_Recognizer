@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer.data.repo.main
+package com.codingtester.textrecognizer.data.repo.data
 
 import androidx.lifecycle.MutableLiveData
 import com.codingtester.textrecognizer.data.pojo.Board
@@ -16,5 +16,5 @@ interface IDataRepository {
 
     suspend fun deleteBoard()
 
-    suspend fun deleteNote()
+    suspend fun deleteNote(boardName: String, userId: String, noteId: Long)
 }

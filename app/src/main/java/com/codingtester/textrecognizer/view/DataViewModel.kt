@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.data.pojo.Note
-import com.codingtester.textrecognizer.data.repo.main.IDataRepository
+import com.codingtester.textrecognizer.data.repo.data.IDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,5 +37,9 @@ class DataViewModel @Inject constructor(
 
     fun getNotesByBoardName(userId: String, boardName: String) = viewModelScope.launch {
         dataRepo.getNotesByBoardName(userId, boardName, mutableNotes)
+    }
+
+    fun deleteNote(boardName: String, userId: String, noteId: Long) = viewModelScope.launch {
+        dataRepo.deleteNote(boardName, userId, noteId)
     }
 }
