@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer.view
+package com.codingtester.textrecognizer.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,19 +27,23 @@ class DataViewModel @Inject constructor(
         dataRepo.addNewBoard(userId, board)
     }
 
-    fun addNewNote(userId: String, boardName: String, note: Note) = viewModelScope.launch {
-        dataRepo.addNewNote(userId, boardName, note)
+    fun addNewNote(userId: String, boardId: String, note: Note) = viewModelScope.launch {
+        dataRepo.addNewNote(userId, boardId, note)
     }
 
     fun getAllBoards(userId: String) = viewModelScope.launch {
         dataRepo.getAllBoards(userId, mutableBoards)
     }
 
-    fun getNotesByBoardName(userId: String, boardName: String) = viewModelScope.launch {
-        dataRepo.getNotesByBoardName(userId, boardName, mutableNotes)
+    fun getNotesByBoardId(userId: String, boardId: String) = viewModelScope.launch {
+        dataRepo.getNotesByBoardId(userId, boardId, mutableNotes)
     }
 
-    fun deleteNote(boardName: String, userId: String, noteId: Long) = viewModelScope.launch {
-        dataRepo.deleteNote(boardName, userId, noteId)
+    fun deleteBoard(userId: String, boardId: String) =  viewModelScope.launch {
+        dataRepo.deleteBoard(userId, boardId)
+    }
+
+    fun deleteNote(boardId: String, userId: String, noteId: Long) = viewModelScope.launch {
+        dataRepo.deleteNote(boardId, userId, noteId)
     }
 }

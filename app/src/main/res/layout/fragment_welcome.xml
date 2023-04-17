@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginTop="72dp"
         android:src="@drawable/app_logoo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         android:id="@+id/btnCreateAccount"
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:backgroundTint="#9C21B1"
+        android:backgroundTint="@color/purple_200"
         android:text="@string/create_an_account"
         android:textSize="16sp"
         app:layout_constraintVertical_chainStyle="packed"
@@ -38,25 +38,10 @@
         android:layout_marginTop="22dp"
         android:backgroundTint="#FFFFFF"
         android:text="@string/log_in"
-        android:textColor="#9C21B1"
+        android:textColor="@color/purple_200"
         android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCreateAccount"
         tools:layout_editor_absoluteX="32dp" />
-
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/txt3"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:gravity="center"-->
-    <!--        android:text="By creating an account you agree to our \n-->
-    <!--Terms &amp; Conditions and agree to Privacy Policy"-->
-    <!--        android:layout_marginTop="24dp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/btnLogin"-->
-    <!--        app:layout_constraintVertical_bias="0.5" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

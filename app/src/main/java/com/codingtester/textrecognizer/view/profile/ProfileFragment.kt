@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.databinding.FragmentProfileBinding
 import com.codingtester.textrecognizer.view.register.LoginActivity
-import com.codingtester.textrecognizer.view.RegisterViewModel
+import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -9,19 +9,23 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.codingtester.textrecognizer.R
-import com.codingtester.textrecognizer.view.MainActivity
-import com.codingtester.textrecognizer.view.RegisterViewModel
+import com.codingtester.textrecognizer.databinding.ActivityLoginBinding
+import com.codingtester.textrecognizer.view.main.MainActivity
+import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var navController: NavController
     private val viewModel by viewModels<RegisterViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         openHomeIfUserLogin()
 

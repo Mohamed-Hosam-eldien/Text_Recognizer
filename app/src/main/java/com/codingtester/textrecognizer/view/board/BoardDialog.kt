@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.databinding.AddBoardLayoutBinding
-import com.codingtester.textrecognizer.view.DataViewModel
-import com.codingtester.textrecognizer.view.RegisterViewModel
+import com.codingtester.textrecognizer.view.viewmodel.DataViewModel
+import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

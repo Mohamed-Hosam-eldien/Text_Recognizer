@@ -21,16 +21,21 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerBoard"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         tools:listitem="@layout/board_layout"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_height="wrap_content"/>
 
-    <View
+    <ImageView
+        android:id="@+id/imgEmpty"
+        android:src="@drawable/empty_board"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_height="80dp"/>
+        android:padding="32dp"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:contentDescription="@null" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,8 @@ import java.io.*
 class SaveFileDialog : DialogFragment() {
 
     private lateinit var binding: SaveFileLayoutBinding
-    private var filePath: String = Environment.getExternalStorageDirectory().path + "/Text Recognizer"
+    private var filePath: String =
+        Environment.getExternalStorageDirectory().path + "/Text Recognizer"
     private var fileExe = "txt"
 
     private var noteId: Long? = null
@@ -30,7 +31,6 @@ class SaveFileDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         noteId = arguments?.getLong("noteId")
         noteTitle = arguments?.getString("noteTitle")
     }
@@ -62,11 +62,17 @@ class SaveFileDialog : DialogFragment() {
 
     private fun handleSaveFileProcess() {
         val fileName = binding.edtFileName.text.toString()
-        if(fileName.isNotEmpty()) {
+        if (fileName.isNotEmpty()) {
             if (isStoragePermissionGranted()) {
-                when(fileExe) {
-                    "txt" -> { saveToTextFile(fileName)}
-                    "word" -> { saveToWordFile(fileName) }
+                binding.btnSave.visibility = View.GONE
+                binding.progress.visibility = View.VISIBLE
+                when (fileExe) {
+                    "txt" -> {
+                        saveToTextFile(fileName)
+                    }
+                    "word" -> {
+                        saveToWordFile(fileName)
+                    }
                 }
             } else {
                 requestPermission()
@@ -82,7 +88,7 @@ class SaveFileDialog : DialogFragment() {
         val print = PrintWriter("$filePath/${fileName}.txt")
         print.write("Note Id : $noteId \nNote Title :  $noteTitle")
         print.close()
-        Toast.makeText(requireContext(), "file saved successfully", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "File saved successfully", Toast.LENGTH_SHORT).show()
         dialog!!.dismiss()
     }
 
@@ -102,7 +108,7 @@ class SaveFileDialog : DialogFragment() {
         return file
     }
 
-    private fun addParagraph(fileName: String , targetDoc: XWPFDocument, file: File){
+    private fun addParagraph(fileName: String, targetDoc: XWPFDocument, file: File) {
         //creating a paragraph in our document and setting its alignment
         val paragraph1 = targetDoc.createParagraph()
         paragraph1.alignment = ParagraphAlignment.LEFT
@@ -121,18 +127,19 @@ class SaveFileDialog : DialogFragment() {
         saveToWordDoc(fileName, targetDoc, file)
     }
 
-    private fun saveToWordDoc(fileName: String, targetDoc: XWPFDocument, file: File){
-   val wordFile = File(file, "${fileName}.docx")
+    private fun saveToWordDoc(fileName: String, targetDoc: XWPFDocument, file: File) {
+        val wordFile = File(file, "${fileName}.docx")
+
         try {
             val fileOut = FileOutputStream(wordFile)
             targetDoc.write(fileOut)
             fileOut.close()
-            Toast.makeText(requireContext(), "file saved successfully", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "File saved successfully", Toast.LENGTH_SHORT).show()
             dialog!!.dismiss()
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            binding.btnSave.visibility = View.VISIBLE
+            binding.progress.visibility = View.GONE
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 

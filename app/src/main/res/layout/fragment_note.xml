@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
+        android:visibility="gone"
         android:src="@drawable/baseline_grid_view_24"
         app:backgroundTint="@color/purple_700"
         app:fabSize="mini"
@@ -33,6 +34,16 @@
         app:useCompatPadding="true"
         android:contentDescription="@null" />
 
+    <ImageView
+        android:id="@+id/imgEmpty"
+        android:src="@drawable/empty_note"
+        android:layout_width="match_parent"
+        android:padding="32dp"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:contentDescription="@null" />
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -44,6 +55,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerNotes"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="match_parent"
                 tools:listitem="@layout/note_layout_linear"

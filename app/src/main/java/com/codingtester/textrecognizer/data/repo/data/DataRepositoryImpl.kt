@@ -18,15 +18,15 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
-            .child(board.title)
+            .child(board.id.toString())
             .setValue(board)
     }
 
-    override suspend fun addNewNote(userId: String, boardName: String, note: Note) {
+    override suspend fun addNewNote(userId: String, boardId: String, note: Note) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
-            .child(boardName)
+            .child(boardId)
             .child(Constants.NOTES)
             .push()
             .setValue(note)
@@ -49,15 +49,15 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             })
     }
 
-    override suspend fun getNotesByBoardName(
+    override suspend fun getNotesByBoardId(
         userId: String,
-        boardName: String,
+        boardId: String,
         liveData: MutableLiveData<List<Note>>
     ) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
-            .child(boardName)
+            .child(boardId)
             .child(Constants.NOTES)
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -71,13 +71,19 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             })
     }
 
-    override suspend fun deleteBoard() {}
-
-    override suspend fun deleteNote(boardName: String, userId: String, noteId: Long) {
+    override suspend fun deleteBoard(userId: String, boardId: String) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
-            .child(boardName)
+            .child(boardId)
+            .removeValue()
+    }
+
+    override suspend fun deleteNote(boardId: String, userId: String, noteId: Long) {
+        databaseRef
+            .child(userId)
+            .child(Constants.BOARDS)
+            .child(boardId)
             .child(Constants.NOTES)
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -90,7 +96,6 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
-
             })
     }
 }

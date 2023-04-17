@@ -28,8 +28,8 @@ import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.data.pojo.Note
 import com.codingtester.textrecognizer.databinding.FragmentNoteBinding
-import com.codingtester.textrecognizer.view.DataViewModel
-import com.codingtester.textrecognizer.view.RegisterViewModel
+import com.codingtester.textrecognizer.view.viewmodel.DataViewModel
+import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -55,7 +55,7 @@ class NoteFragment : Fragment(), OnClickNote {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currentBoard = args.board
-        dataViewModel.getNotesByBoardName(userViewModel.currentUser?.uid!!, currentBoard.title)
+        dataViewModel.getNotesByBoardId(userViewModel.currentUser?.uid!!, currentBoard.id.toString())
     }
 
     override fun onCreateView(
@@ -63,8 +63,7 @@ class NoteFragment : Fragment(), OnClickNote {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_note, container, false)
-        binding = FragmentNoteBinding.bind(view)
+        binding = FragmentNoteBinding.inflate(inflater, container, false)
 
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = currentBoard.title
 
@@ -81,8 +80,17 @@ class NoteFragment : Fragment(), OnClickNote {
         }
 
         dataViewModel.notesLiveData.observe(viewLifecycleOwner) { notes ->
-            currentBoard.noteList = notes
-            noteAdapter.updatePopularList(notes, true)
+            if(notes.isEmpty()) {
+                binding.recyclerNotes.visibility = View.GONE
+                binding.imgEmpty.visibility = View.VISIBLE
+                binding.btnStyle.visibility = View.GONE
+            } else {
+                binding.recyclerNotes.visibility = View.VISIBLE
+                binding.imgEmpty.visibility = View.GONE
+                binding.btnStyle.visibility = View.VISIBLE
+                currentBoard.noteList = notes
+                noteAdapter.updatePopularList(notes, true)
+            }
         }
 
         binding.btnTakePhoto.setOnClickListener {
@@ -126,9 +134,9 @@ class NoteFragment : Fragment(), OnClickNote {
             .setMessage("Are you sure you want to delete this note?")
             .setPositiveButton("Yes") { dialog,_ ->
                 lifecycleScope.launch {
-                    dataViewModel.deleteNote(currentBoard.title, userViewModel.currentUser?.uid!!, id)
+                    dataViewModel.deleteNote(currentBoard.id.toString(), userViewModel.currentUser?.uid!!, id)
                     dialog.dismiss()
-                    Toast.makeText(requireContext(), "note removed successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Note removed successfully", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel") {dialog,_ ->
@@ -193,7 +201,7 @@ class NoteFragment : Fragment(), OnClickNote {
         } else {
             val bundle = Bundle()
             bundle.putString("textAfterRec", text)
-            bundle.putString("boardName", currentBoard.title)
+            bundle.putString("boardId", currentBoard.id.toString())
             findNavController().navigate(R.id.action_noteFragment_to_reviewFragment, bundle)
         }
     }

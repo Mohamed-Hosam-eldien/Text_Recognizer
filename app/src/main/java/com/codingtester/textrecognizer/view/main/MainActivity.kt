@@ -1,12 +1,15 @@
-package com.codingtester.textrecognizer.view
+package com.codingtester.textrecognizer.view.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,14 +24,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         val navHost =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        navController = navHost.navController
-//        val appBarConfiguration = AppBarConfiguration(navController.graph)
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
-        setupActionBarWithNavController(navController)
+        navController = navHost.navController
+
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        findViewById<Toolbar>(R.id.toolbar).setupWithNavController(navController, appBarConfiguration)
+
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.data.pojo.Note
 import com.codingtester.textrecognizer.databinding.FragmentReviewBinding
-import com.codingtester.textrecognizer.view.DataViewModel
-import com.codingtester.textrecognizer.view.RegisterViewModel
+import com.codingtester.textrecognizer.view.viewmodel.DataViewModel
+import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,12 +23,12 @@ class ReviewFragment : Fragment() {
 
     private lateinit var binding: FragmentReviewBinding
     private var text = ""
-    private var boardName = ""
+    private var boardId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         text = arguments?.getString("textAfterRec") ?: ""
-        boardName = arguments?.getString("boardName") ?: ""
+        boardId = arguments?.getString("boardId") ?: ""
     }
 
     override fun onCreateView(
@@ -55,10 +55,9 @@ class ReviewFragment : Fragment() {
         binding.clickSave.visibility = View.GONE
         binding.reviewProgressBar.visibility = View.VISIBLE
         val note = Note(System.currentTimeMillis(), binding.edtText.text.toString(), System.currentTimeMillis())
-        dataViewModel.addNewNote(userViewModel.currentUser?.uid!!, boardName , note)
+        dataViewModel.addNewNote(userViewModel.currentUser?.uid!!, boardId , note)
 
         findNavController().popBackStack(R.id.reviewFragment, true)
-
         Toast.makeText(requireContext(), "Note has been added successfully", Toast.LENGTH_LONG).show()
     }
 

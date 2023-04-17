@@ -16,4 +16,7 @@
     <string name="word_file">Word file</string>
     <string name="file_name">File Name…</string>
     <string name="save_file">Save File</string>
+    <string name="full_name">Full Name</string>
+    <string name="save_new_file">Save New File</string>
+    <string name="txt_file">Txt File</string>
 </resources>

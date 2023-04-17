@@ -3,6 +3,7 @@ package com.codingtester.textrecognizer.view.board
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -32,11 +33,16 @@ class BoardAdapter(private val onClickBoard: OnClickBoard): RecyclerView.Adapter
         holder.itemView.setOnClickListener {
             onClickBoard.onClickToBoard(board)
         }
+
+        holder.imgDelete.setOnClickListener {
+            onClickBoard.onClickToDelete(board.id.toString())
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtBoardName: TextView = itemView.findViewById(R.id.txtBoardName)
         val txtDate: TextView = itemView.findViewById(R.id.txtDate)
+        val imgDelete: ImageView = itemView.findViewById(R.id.imgDelete)
     }
 
     private fun getTimeFromMilleSecond(dateInMilliSecond: Long): String {

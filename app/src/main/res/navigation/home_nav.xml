@@ -12,18 +12,22 @@
         tools:layout="@layout/fragment_board">
         <action
             android:id="@+id/action_boardFragment_to_noteFragment"
-            app:destination="@id/noteFragment" />
+            app:destination="@id/noteFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_boardFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/noteFragment"
+        android:label=""
         android:name="com.codingtester.textrecognizer.view.note.NoteFragment"
         tools:layout="@layout/fragment_note">
         <action
             android:id="@+id/action_noteFragment_to_reviewFragment"
-            app:destination="@id/reviewFragment" />
+            app:destination="@id/reviewFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
         <argument
             android:name="board"
             app:argType="com.codingtester.textrecognizer.data.pojo.Board" />
@@ -31,9 +35,10 @@
 
     <action
         android:id="@+id/action_to_profileFragment"
+        app:destination="@id/profileFragment"
+        app:enterAnim="@android:anim/slide_in_left"
         app:popUpTo="@id/profileFragment"
-        app:popUpToInclusive="true"
-        app:destination="@id/profileFragment" />
+        app:popUpToInclusive="true" />
 
     <fragment
         android:id="@+id/profileFragment"
@@ -48,9 +53,10 @@
         tools:layout="@layout/fragment_review" >
         <action
             android:id="@+id/action_reviewFragment_to_noteFragment"
+            app:destination="@id/noteFragment"
+            app:enterAnim="@android:anim/slide_in_left"
             app:launchSingleTop="true"
             app:popUpTo="@+id/noteFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/noteFragment" />
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.databinding.FragmentLoginBinding
-import com.codingtester.textrecognizer.view.MainActivity
-import com.codingtester.textrecognizer.view.RegisterViewModel
+import com.codingtester.textrecognizer.view.main.MainActivity
+import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -37,6 +37,8 @@ class LoginFragment : Fragment() {
                 requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
                 requireActivity().finish()
             } else {
+                binding.btnLogin.visibility = View.VISIBLE
+                binding.progress.visibility = View.GONE
                 Toast.makeText(requireContext(), "Something wrong! please try again", Toast.LENGTH_SHORT).show()
             }
         }
@@ -47,8 +49,14 @@ class LoginFragment : Fragment() {
         val email = binding.edtEmail.text.toString()
         val pass = binding.edtPass.text.toString()
 
-        lifecycleScope.launch {
-            viewModel.login(email, pass)
+        if(email.isNotEmpty() && pass.isNotEmpty()) {
+            binding.btnLogin.visibility = View.GONE
+            binding.progress.visibility = View.VISIBLE
+            lifecycleScope.launch {
+                viewModel.login(email, pass)
+            }
+        } else {
+            Toast.makeText(requireContext(), "please fill all data", Toast.LENGTH_SHORT).show()
         }
     }
 }

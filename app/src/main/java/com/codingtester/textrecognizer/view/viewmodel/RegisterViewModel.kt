@@ -1,4 +1,4 @@
-package com.codingtester.textrecognizer.view
+package com.codingtester.textrecognizer.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
