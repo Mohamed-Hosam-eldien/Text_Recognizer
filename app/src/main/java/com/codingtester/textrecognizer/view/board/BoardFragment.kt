@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.databinding.FragmentBoardBinding
 import com.codingtester.textrecognizer.view.viewmodel.DataViewModel
-import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -22,13 +21,12 @@ class BoardFragment : Fragment(), OnClickBoard {
 
     private lateinit var binding: FragmentBoardBinding
     private val dataViewModel by viewModels<DataViewModel>()
-    private val userViewModel by viewModels<RegisterViewModel>()
     private val boardAdapter by lazy { BoardAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        dataViewModel.getAllBoards(userViewModel.currentUser?.uid!!)
+        dataViewModel.getAllBoards()
     }
 
     override fun onCreateView(
@@ -54,10 +52,12 @@ class BoardFragment : Fragment(), OnClickBoard {
             if(boards.isEmpty()) {
                 binding.recyclerBoard.visibility = View.GONE
                 binding.imgEmpty.visibility = View.VISIBLE
+                binding.progress.visibility = View.GONE
             } else {
                 binding.recyclerBoard.visibility = View.VISIBLE
                 binding.imgEmpty.visibility = View.GONE
                 boardAdapter.updatePopularList(boards)
+                binding.progress.visibility = View.GONE
             }
         }
     }
@@ -71,13 +71,13 @@ class BoardFragment : Fragment(), OnClickBoard {
         findNavController().navigate(action)
     }
 
-    override fun onClickToDelete(id: String) {
+    override fun onClickToDelete(boardId: String) {
         AlertDialog.Builder(requireContext())
             .setTitle("Delete Board!")
             .setMessage("Are you sure you want to delete this board?")
             .setPositiveButton("Yes") { dialog,_ ->
                 lifecycleScope.launch {
-                    dataViewModel.deleteBoard(userViewModel.currentUser?.uid!!, id)
+                    dataViewModel.deleteBoard(boardId)
                     dialog.dismiss()
                     Toast.makeText(requireContext(), "Board removed successfully", Toast.LENGTH_SHORT).show()
                 }

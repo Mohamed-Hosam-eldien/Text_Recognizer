@@ -23,27 +23,27 @@ class DataViewModel @Inject constructor(
     private val mutableNotes: MutableLiveData<List<Note>> = MutableLiveData()
     val notesLiveData: LiveData<List<Note>> = mutableNotes
 
-    fun addNewBoard(userId: String, board: Board) = viewModelScope.launch {
-        dataRepo.addNewBoard(userId, board)
+    fun addNewBoard(board: Board) = viewModelScope.launch {
+        dataRepo.addNewBoard(board)
     }
 
-    fun addNewNote(userId: String, boardId: String, note: Note) = viewModelScope.launch {
-        dataRepo.addNewNote(userId, boardId, note)
+    fun addNewNote(boardId: String, note: Note) = viewModelScope.launch {
+        dataRepo.addNewNote(boardId, note)
     }
 
-    fun getAllBoards(userId: String) = viewModelScope.launch {
-        dataRepo.getAllBoards(userId, mutableBoards)
+    fun getAllBoards() = viewModelScope.launch {
+        dataRepo.getAllBoards(mutableBoards)
     }
 
-    fun getNotesByBoardId(userId: String, boardId: String) = viewModelScope.launch {
-        dataRepo.getNotesByBoardId(userId, boardId, mutableNotes)
+    fun getNotesByBoardId(boardId: String) = viewModelScope.launch {
+        dataRepo.getNotesByBoardId(boardId, mutableNotes)
     }
 
-    fun deleteBoard(userId: String, boardId: String) =  viewModelScope.launch {
-        dataRepo.deleteBoard(userId, boardId)
+    fun deleteBoard(boardId: String) =  viewModelScope.launch {
+        dataRepo.deleteBoard(boardId)
     }
 
-    fun deleteNote(boardId: String, userId: String, noteId: Long) = viewModelScope.launch {
-        dataRepo.deleteNote(boardId, userId, noteId)
+    fun deleteNote(boardId: String, noteId: Long) = viewModelScope.launch {
+        dataRepo.deleteNote(boardId, noteId)
     }
 }

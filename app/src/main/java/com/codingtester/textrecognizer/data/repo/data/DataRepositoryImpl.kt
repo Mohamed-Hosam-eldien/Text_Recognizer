@@ -1,5 +1,6 @@
 package com.codingtester.textrecognizer.data.repo.data
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.data.pojo.Note
@@ -13,8 +14,9 @@ import javax.inject.Inject
 class DataRepositoryImpl @Inject constructor() : IDataRepository {
 
     private val databaseRef = FirebaseDatabase.getInstance().getReference(Constants.USERS)
+    private val userId = Constants.currentUser.id
 
-    override suspend fun addNewBoard(userId: String, board: Board) {
+    override suspend fun addNewBoard(board: Board) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -22,7 +24,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             .setValue(board)
     }
 
-    override suspend fun addNewNote(userId: String, boardId: String, note: Note) {
+    override suspend fun addNewNote(boardId: String, note: Note) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -32,7 +34,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             .setValue(note)
     }
 
-    override suspend fun getAllBoards(userId: String, liveData: MutableLiveData<List<Board>>) {
+    override suspend fun getAllBoards(liveData: MutableLiveData<List<Board>>) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -50,7 +52,6 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
     }
 
     override suspend fun getNotesByBoardId(
-        userId: String,
         boardId: String,
         liveData: MutableLiveData<List<Note>>
     ) {
@@ -71,7 +72,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             })
     }
 
-    override suspend fun deleteBoard(userId: String, boardId: String) {
+    override suspend fun deleteBoard(boardId: String) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -79,7 +80,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             .removeValue()
     }
 
-    override suspend fun deleteNote(boardId: String, userId: String, noteId: Long) {
+    override suspend fun deleteNote(boardId: String, noteId: Long) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)

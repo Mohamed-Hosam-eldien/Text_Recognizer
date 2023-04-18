@@ -2,8 +2,11 @@ package com.codingtester.textrecognizer.view.note
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Environment.DIRECTORY_DOCUMENTS
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +25,7 @@ import java.io.*
 class SaveFileDialog : DialogFragment() {
 
     private lateinit var binding: SaveFileLayoutBinding
-    private var filePath: String =
-        Environment.getExternalStorageDirectory().path + "/Text Recognizer"
+    private var filePath: String = Environment.getExternalStoragePublicDirectory("$DIRECTORY_DOCUMENTS/Text Recognizer").path
     private var fileExe = "txt"
 
     private var noteId: Long? = null
@@ -63,23 +65,32 @@ class SaveFileDialog : DialogFragment() {
     private fun handleSaveFileProcess() {
         val fileName = binding.edtFileName.text.toString()
         if (fileName.isNotEmpty()) {
-            if (isStoragePermissionGranted()) {
-                binding.btnSave.visibility = View.GONE
-                binding.progress.visibility = View.VISIBLE
-                when (fileExe) {
-                    "txt" -> {
-                        saveToTextFile(fileName)
-                    }
-                    "word" -> {
-                        saveToWordFile(fileName)
-                    }
-                }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                saveFileInDevice(fileName)
             } else {
-                requestPermission()
+                if (isStoragePermissionGranted()) {
+                    saveFileInDevice(fileName)
+                } else {
+                    requestPermission()
+                }
             }
 
         } else {
             binding.edtFileName.error = "required"
+        }
+    }
+
+    private fun saveFileInDevice(fileName: String) {
+        binding.btnSave.visibility = View.GONE
+        binding.progress.visibility = View.VISIBLE
+        when (fileExe) {
+            "txt" -> {
+                saveToTextFile(fileName)
+            }
+            "word" -> {
+                saveToWordFile(fileName)
+            }
         }
     }
 
@@ -102,39 +113,41 @@ class SaveFileDialog : DialogFragment() {
 
     private fun makeFileDir(): File {
         val file = File(filePath)
-        if (!file.exists()) {
-            file.mkdir()
+        try {
+            file.mkdirs()
+        } catch (e: Exception) {
+            Log.e("TAG", "File Exception : ${e.message}")
         }
         return file
     }
 
     private fun addParagraph(fileName: String, targetDoc: XWPFDocument, file: File) {
         //creating a paragraph in our document and setting its alignment
-        val paragraph1 = targetDoc.createParagraph()
-        paragraph1.alignment = ParagraphAlignment.LEFT
+        val paragraph = targetDoc.createParagraph()
+        paragraph.alignment = ParagraphAlignment.LEFT
 
         //creating a run for adding text
-        val sentenceRun1 = paragraph1.createRun()
+        val sentenceRun = paragraph.createRun()
 
         //format the text
-        sentenceRun1.isBold = true
-        sentenceRun1.fontSize = 14
-        sentenceRun1.fontFamily = "Comic Sans MS"
-        sentenceRun1.setText("Note Id : $noteId \n Note Title : $noteTitle")
+        sentenceRun.isBold = true
+        sentenceRun.fontSize = 14
+        sentenceRun.fontFamily = "Comic Sans MS"
+        sentenceRun.setText("Note Id : $noteId \n Note Title : $noteTitle")
         //add a sentence break
-        sentenceRun1.addBreak()
+        sentenceRun.addBreak()
 
         saveToWordDoc(fileName, targetDoc, file)
     }
 
     private fun saveToWordDoc(fileName: String, targetDoc: XWPFDocument, file: File) {
         val wordFile = File(file, "${fileName}.docx")
-
         try {
             val fileOut = FileOutputStream(wordFile)
             targetDoc.write(fileOut)
             fileOut.close()
-            Toast.makeText(requireContext(), "File saved successfully", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "File saved successfully", Toast.LENGTH_SHORT)
+                .show()
             dialog!!.dismiss()
         } catch (e: Exception) {
             binding.btnSave.visibility = View.VISIBLE
@@ -142,7 +155,6 @@ class SaveFileDialog : DialogFragment() {
             Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun requestPermission() {
         ActivityCompat.requestPermissions(

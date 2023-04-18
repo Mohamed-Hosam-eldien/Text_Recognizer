@@ -19,4 +19,5 @@
     <string name="full_name">Full Name</string>
     <string name="save_new_file">Save New File</string>
     <string name="txt_file">Txt File</string>
+    <string name="pick_image_intent_chooser_title">pick image</string>
 </resources>

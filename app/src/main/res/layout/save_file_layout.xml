@@ -16,6 +16,18 @@
         android:textSize="18sp"
         android:textColor="@color/black"/>
 
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        android:text="internal storage/Documents/Text Recognizer/.."
+        android:gravity="center"
+        android:textSize="12dp"
+        android:layout_marginTop="12sp"
+        android:textColor="@color/black"/>
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -32,7 +44,7 @@
         android:layout_marginTop="16sp"
         app:counterEnabled="true"
         app:counterMaxLength="22"
-        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintTop_toBottomOf="@id/text2"
         app:startIconTint="#6B6B6B">
 
         <com.google.android.material.textfield.TextInputEditText

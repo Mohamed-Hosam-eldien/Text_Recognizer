@@ -12,7 +12,6 @@ import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.databinding.AddBoardLayoutBinding
 import com.codingtester.textrecognizer.view.viewmodel.DataViewModel
-import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +19,6 @@ class BoardDialog : DialogFragment() {
 
     private lateinit var binding: AddBoardLayoutBinding
     private val viewModel by viewModels<DataViewModel>()
-    private val regVewModel by viewModels<RegisterViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +47,7 @@ class BoardDialog : DialogFragment() {
     private fun addNewBoard(boardName: String) {
         // add new board to firebase
         val board = Board(System.currentTimeMillis(), boardName, System.currentTimeMillis(), emptyList())
-        viewModel.addNewBoard(regVewModel.currentUser?.uid!!, board)
+        viewModel.addNewBoard(board)
         dialog!!.dismiss()
         Toast.makeText(requireContext(), "board has been added successfully", Toast.LENGTH_SHORT).show()
     }

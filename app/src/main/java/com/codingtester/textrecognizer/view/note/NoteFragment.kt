@@ -1,19 +1,19 @@
 package com.codingtester.textrecognizer.view.note
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -29,15 +29,12 @@ import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.data.pojo.Note
 import com.codingtester.textrecognizer.databinding.FragmentNoteBinding
 import com.codingtester.textrecognizer.view.viewmodel.DataViewModel
-import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.io.*
 
 @AndroidEntryPoint
 class NoteFragment : Fragment(), OnClickNote {
@@ -45,17 +42,31 @@ class NoteFragment : Fragment(), OnClickNote {
     private val args: NoteFragmentArgs by navArgs()
     private lateinit var binding: FragmentNoteBinding
     private lateinit var currentBoard: Board
-    private lateinit var imageBitmap: Bitmap
     private var isLinear = true
 
     private val noteAdapter by lazy { NoteAdapter(this) }
     private val dataViewModel by viewModels<DataViewModel>()
-    private val userViewModel by viewModels<RegisterViewModel>()
+
+    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage
+                .activity()
+                .getIntent(requireActivity())
+                .setType("image/*")
+                .setAction(MediaStore.ACTION_IMAGE_CAPTURE)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent)?.uri
+        }
+    }
+
+    private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currentBoard = args.board
-        dataViewModel.getNotesByBoardId(userViewModel.currentUser?.uid!!, currentBoard.id.toString())
+        dataViewModel.getNotesByBoardId(currentBoard.id.toString())
     }
 
     override fun onCreateView(
@@ -64,9 +75,7 @@ class NoteFragment : Fragment(), OnClickNote {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentNoteBinding.inflate(inflater, container, false)
-
         (activity as AppCompatActivity?)!!.supportActionBar!!.title = currentBoard.title
-
         return binding.root
     }
 
@@ -80,24 +89,22 @@ class NoteFragment : Fragment(), OnClickNote {
         }
 
         dataViewModel.notesLiveData.observe(viewLifecycleOwner) { notes ->
-            if(notes.isEmpty()) {
-                binding.recyclerNotes.visibility = View.GONE
-                binding.imgEmpty.visibility = View.VISIBLE
-                binding.btnStyle.visibility = View.GONE
+            if (notes.isEmpty()) {
+                setEmptyData()
             } else {
-                binding.recyclerNotes.visibility = View.VISIBLE
-                binding.imgEmpty.visibility = View.GONE
-                binding.btnStyle.visibility = View.VISIBLE
-                currentBoard.noteList = notes
-                noteAdapter.updatePopularList(notes, true)
+                setNotesData(notes)
+            }
+        }
+
+        cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
+            it?.let { uri ->
+                getTextFromBitmap(uri)
             }
         }
 
         binding.btnTakePhoto.setOnClickListener {
             if (isCameraPermissionGranted()) {
-                CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .start(requireActivity(), this)
+                cropActivityResultLauncher.launch(null)
             } else {
                 requestCameraPermission()
             }
@@ -106,6 +113,20 @@ class NoteFragment : Fragment(), OnClickNote {
         binding.btnStyle.setOnClickListener {
             changeAdapterStyle()
         }
+    }
+
+    private fun setNotesData(notes: List<Note>) {
+        binding.recyclerNotes.visibility = View.VISIBLE
+        binding.imgEmpty.visibility = View.GONE
+        binding.btnStyle.visibility = View.VISIBLE
+        currentBoard.noteList = notes
+        noteAdapter.updatePopularList(notes, true)
+    }
+
+    private fun setEmptyData() {
+        binding.recyclerNotes.visibility = View.GONE
+        binding.imgEmpty.visibility = View.VISIBLE
+        binding.btnStyle.visibility = View.GONE
     }
 
     private fun changeAdapterStyle() {
@@ -132,14 +153,18 @@ class NoteFragment : Fragment(), OnClickNote {
         AlertDialog.Builder(requireContext())
             .setTitle("Delete Note!")
             .setMessage("Are you sure you want to delete this note?")
-            .setPositiveButton("Yes") { dialog,_ ->
+            .setPositiveButton("Yes") { dialog, _ ->
                 lifecycleScope.launch {
-                    dataViewModel.deleteNote(currentBoard.id.toString(), userViewModel.currentUser?.uid!!, id)
+                    dataViewModel.deleteNote(currentBoard.id.toString(), id)
                     dialog.dismiss()
-                    Toast.makeText(requireContext(), "Note removed successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Note removed successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-            .setNegativeButton("Cancel") {dialog,_ ->
+            .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }.show()
     }
@@ -155,38 +180,17 @@ class NoteFragment : Fragment(), OnClickNote {
         dialog.show(requireActivity().supportFragmentManager, "saveFile")
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val cropImageResult = CropImage.getActivityResult(data)
-
-            if (resultCode == Activity.RESULT_OK) {
-
-                val uri = cropImageResult.uri
-                imageBitmap = if (Build.VERSION.SDK_INT < 28) {
-                    MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
-                } else {
-                    val source: ImageDecoder.Source =
-                        ImageDecoder.createSource(requireActivity().contentResolver, uri)
-                    ImageDecoder.decodeBitmap(source)
-                }
-                getTextFromBitmap(imageBitmap)
-            }
-        }
-    }
-
-    private fun getTextFromBitmap(imageBitmap: Bitmap) {
-        val inputImage = InputImage.fromBitmap(imageBitmap, 0)
+    private fun getTextFromBitmap(imageUri: Uri) {
+        val inputImage = InputImage.fromFilePath(requireContext(), imageUri)
 
         //creating TextRecognizer instance
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
         //process the image
-        recognizer.process(inputImage).addOnSuccessListener { textAfterRecognize -> //Task completed successfully
-            navigateToReviewFragment(textAfterRecognize.text)
-        }.addOnFailureListener { e -> // Task failed with an exception
+        recognizer.process(inputImage)
+            .addOnSuccessListener { textAfterRecognize -> //Task completed successfully
+                navigateToReviewFragment(textAfterRecognize.text)
+            }.addOnFailureListener { e -> // Task failed with an exception
             e.printStackTrace()
         }
     }

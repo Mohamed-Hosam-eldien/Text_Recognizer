@@ -1,7 +1,6 @@
 package com.codingtester.textrecognizer.view.note
 
 import androidx.recyclerview.widget.DiffUtil
-import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.data.pojo.Note
 
 class NoteDiffUtil(

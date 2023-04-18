@@ -9,7 +9,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.codingtester.textrecognizer.R
+import com.codingtester.textrecognizer.data.pojo.User
 import com.codingtester.textrecognizer.databinding.ActivityLoginBinding
+import com.codingtester.textrecognizer.utils.Constants
 import com.codingtester.textrecognizer.view.main.MainActivity
 import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,8 +42,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun openHomeIfUserLogin() {
-        viewModel.loginLiveData.observe(this) {
-            if(it != null) {
+        viewModel.loginLiveData.observe(this) {user ->
+            user?.let {
+                Constants.currentUser = User(user.uid, user.displayName, user.email)
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }

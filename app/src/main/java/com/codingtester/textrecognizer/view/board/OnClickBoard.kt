@@ -4,5 +4,5 @@ import com.codingtester.textrecognizer.data.pojo.Board
 
 interface OnClickBoard {
     fun onClickToBoard(board: Board)
-    fun onClickToDelete(id: String)
+    fun onClickToDelete(boardId: String)
 }
