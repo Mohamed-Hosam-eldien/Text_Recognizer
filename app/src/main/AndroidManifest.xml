@@ -14,7 +14,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_app_logo"
         android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/Theme.TextRecognizer"
         tools:targetApi="31">
 
@@ -23,7 +23,7 @@
             android:exported="true">
         </activity>
 
-        <activity android:name="com.codingtester.textrecognizer.view.register.LoginActivity"
+        <activity android:name="com.codingtester.textrecognizer.view.register.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

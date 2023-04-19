@@ -47,6 +47,8 @@ class NoteFragment : Fragment(), OnClickNote {
     private val noteAdapter by lazy { NoteAdapter(this) }
     private val dataViewModel by viewModels<DataViewModel>()
 
+    // to open camera and take picture
+    // and get image when user take it by crop image library
     private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
         override fun createIntent(context: Context, input: Any?): Intent {
             return CropImage
@@ -55,12 +57,12 @@ class NoteFragment : Fragment(), OnClickNote {
                 .setType("image/*")
                 .setAction(MediaStore.ACTION_IMAGE_CAPTURE)
         }
-
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
             return CropImage.getActivityResult(intent)?.uri
         }
     }
 
+    // launcher to launch camera when user click to button
     private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,12 +98,15 @@ class NoteFragment : Fragment(), OnClickNote {
             }
         }
 
+        // when user finish crop image , image will convert to uri
+        // then take this uri and pass it to function to get text from it
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
             it?.let { uri ->
                 getTextFromBitmap(uri)
             }
         }
 
+        // before take photo we will check permission of camera then open camera
         binding.btnTakePhoto.setOnClickListener {
             if (isCameraPermissionGranted()) {
                 cropActivityResultLauncher.launch(null)
@@ -110,6 +115,7 @@ class NoteFragment : Fragment(), OnClickNote {
             }
         }
 
+        // to change style of adapter
         binding.btnStyle.setOnClickListener {
             changeAdapterStyle()
         }
@@ -123,6 +129,7 @@ class NoteFragment : Fragment(), OnClickNote {
         noteAdapter.updatePopularList(notes, true)
     }
 
+    // if no data is empty
     private fun setEmptyData() {
         binding.recyclerNotes.visibility = View.GONE
         binding.imgEmpty.visibility = View.VISIBLE
@@ -187,22 +194,25 @@ class NoteFragment : Fragment(), OnClickNote {
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
         //process the image
-        recognizer.process(inputImage)
-            .addOnSuccessListener { textAfterRecognize -> //Task completed successfully
+        recognizer.process(inputImage).addOnSuccessListener { textAfterRecognize -> //Task completed successfully
                 navigateToReviewFragment(textAfterRecognize.text)
             }.addOnFailureListener { e -> // Task failed with an exception
             e.printStackTrace()
         }
     }
 
+    // after get text from image we will move to review screen
+    // to show text and save it on firebase
     private fun navigateToReviewFragment(text: String) {
         if (text.isBlank() || text.isEmpty()) {
+            // if no text found on image
             Toast.makeText(
                 requireContext(),
                 "Failed to recognize text! try again",
                 Toast.LENGTH_SHORT
             ).show()
         } else {
+            // if found text on image
             val bundle = Bundle()
             bundle.putString("textAfterRec", text)
             bundle.putString("boardId", currentBoard.id.toString())

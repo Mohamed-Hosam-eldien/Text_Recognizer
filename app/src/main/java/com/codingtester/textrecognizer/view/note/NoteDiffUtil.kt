@@ -3,6 +3,7 @@ package com.codingtester.textrecognizer.view.note
 import androidx.recyclerview.widget.DiffUtil
 import com.codingtester.textrecognizer.data.pojo.Note
 
+// diff util to update board adapter when data changed
 class NoteDiffUtil(
     private val oldItems:List<Note>,
     private val newItems:List<Note>

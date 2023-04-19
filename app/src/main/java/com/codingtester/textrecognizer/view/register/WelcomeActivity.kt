@@ -10,22 +10,22 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.data.pojo.User
-import com.codingtester.textrecognizer.databinding.ActivityLoginBinding
+import com.codingtester.textrecognizer.databinding.ActivityWelcomeBinding
 import com.codingtester.textrecognizer.utils.Constants
 import com.codingtester.textrecognizer.view.main.MainActivity
 import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class WelcomeActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: ActivityWelcomeBinding
     private lateinit var navController: NavController
     private val viewModel by viewModels<RegisterViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
@@ -41,16 +41,18 @@ class LoginActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
     }
 
+    // if user login or sign up in last time we will scape register and login screens
     private fun openHomeIfUserLogin() {
-        viewModel.loginLiveData.observe(this) {user ->
-            user?.let {
-                Constants.currentUser = User(user.uid, user.displayName, user.email)
+        viewModel.loginLiveData.observe(this) { response ->
+            if(response?.firebaseUser != null) {
+                Constants.currentUser = User(response.firebaseUser!!.uid, response.firebaseUser!!.displayName, response.firebaseUser!!.email)
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }
     }
 
+    // to handle back button on toolbar
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }

@@ -25,7 +25,11 @@ import java.io.*
 class SaveFileDialog : DialogFragment() {
 
     private lateinit var binding: SaveFileLayoutBinding
+
+    // this path to save file on device
     private var filePath: String = Environment.getExternalStoragePublicDirectory("$DIRECTORY_DOCUMENTS/Text Recognizer").path
+
+    // this variable to know with file type user selected
     private var fileExe = "txt"
 
     private var noteId: Long? = null
@@ -33,6 +37,8 @@ class SaveFileDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // get data of note that user selected to save
         noteId = arguments?.getLong("noteId")
         noteTitle = arguments?.getString("noteTitle")
     }
@@ -44,6 +50,7 @@ class SaveFileDialog : DialogFragment() {
     ): View {
         binding = SaveFileLayoutBinding.inflate(inflater, container, false)
 
+        // change variable when user selected file type
         binding.radioGroupFile.setOnCheckedChangeListener { _, radioID ->
             when (radioID) {
                 R.id.radioTxt -> {
@@ -64,11 +71,13 @@ class SaveFileDialog : DialogFragment() {
 
     private fun handleSaveFileProcess() {
         val fileName = binding.edtFileName.text.toString()
-        if (fileName.isNotEmpty()) {
 
+        if (fileName.isNotEmpty()) {
+            // if Android api >= Q we don't need to permission but else we need to permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 saveFileInDevice(fileName)
             } else {
+                 //check permission before save file
                 if (isStoragePermissionGranted()) {
                     saveFileInDevice(fileName)
                 } else {
@@ -84,6 +93,7 @@ class SaveFileDialog : DialogFragment() {
     private fun saveFileInDevice(fileName: String) {
         binding.btnSave.visibility = View.GONE
         binding.progress.visibility = View.VISIBLE
+        // check which file type user selected
         when (fileExe) {
             "txt" -> {
                 saveToTextFile(fileName)
@@ -95,12 +105,17 @@ class SaveFileDialog : DialogFragment() {
     }
 
     private fun saveToTextFile(fileName: String) {
-        makeFileDir()
-        val print = PrintWriter("$filePath/${fileName}.txt")
-        print.write("Note Id : $noteId \nNote Title :  $noteTitle")
-        print.close()
-        Toast.makeText(requireContext(), "File saved successfully", Toast.LENGTH_SHORT).show()
-        dialog!!.dismiss()
+        try {
+            makeFileDir()
+
+            val print = PrintWriter("$filePath/${fileName}.txt")
+            print.write("Note Id : $noteId \nNote Title :  $noteTitle")
+            print.close()
+            Toast.makeText(requireContext(), "File saved successfully", Toast.LENGTH_SHORT).show()
+            dialog!!.dismiss()
+        } catch(e: Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun saveToWordFile(fileName: String) {
@@ -112,6 +127,7 @@ class SaveFileDialog : DialogFragment() {
     }
 
     private fun makeFileDir(): File {
+        // make direction of our folder to save files in it
         val file = File(filePath)
         try {
             file.mkdirs()
@@ -134,6 +150,7 @@ class SaveFileDialog : DialogFragment() {
         sentenceRun.fontSize = 14
         sentenceRun.fontFamily = "Comic Sans MS"
         sentenceRun.setText("Note Id : $noteId \n Note Title : $noteTitle")
+
         //add a sentence break
         sentenceRun.addBreak()
 
@@ -141,6 +158,7 @@ class SaveFileDialog : DialogFragment() {
     }
 
     private fun saveToWordDoc(fileName: String, targetDoc: XWPFDocument, file: File) {
+        // set name of document that found on path and save file by output stream
         val wordFile = File(file, "${fileName}.docx")
         try {
             val fileOut = FileOutputStream(wordFile)

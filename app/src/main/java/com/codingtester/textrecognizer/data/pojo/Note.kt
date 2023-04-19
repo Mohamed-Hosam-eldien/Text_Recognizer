@@ -9,3 +9,4 @@ data class Note(
     val title: String = "",
     val dateInMilliSecond: Long=0
 ) : Parcelable
+// we implement Parcelable to can send this object from fragment to another

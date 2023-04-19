@@ -10,3 +10,4 @@ data class Board(
     val dateInMilliSecond: Long=0,
     var noteList: List<Note> = emptyList()
 ): Parcelable
+// we implement Parcelable to can send this object from fragment to another

@@ -1,5 +1,6 @@
 package com.codingtester.textrecognizer.data.repo.register
 
+import com.codingtester.textrecognizer.data.pojo.UserResponse
 import com.codingtester.textrecognizer.utils.await
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -8,34 +9,36 @@ import javax.inject.Inject
 
 class RegisterRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
-): IRegisterRepository {
+) {
 
-    override val currentUser: FirebaseUser?
+    // current user is variable once user create account and sign in or login to account
+    // he prevent user to login everytime he open application
+    val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
-    override suspend fun login(email: String, password: String): FirebaseUser? {
+    suspend fun login(email: String, password: String): UserResponse {
         return try {
             val currentUser = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            currentUser.user
-        } catch (ex : Exception) {
-            null
+            UserResponse(currentUser.user, "")
+        } catch (ex: Exception) {
+            UserResponse(null, ex.message)
         }
     }
 
-    override suspend fun signup(name: String, email: String, password: String): FirebaseUser? {
+    suspend fun signup(name: String, email: String, password: String): UserResponse {
         return try {
             val newUser = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val profileUpdates = userProfileChangeRequest {
                 displayName = name
             }
             newUser.user?.updateProfile(profileUpdates)?.await()
-            newUser.user
+            UserResponse(newUser.user, "")
         } catch (ex: Exception) {
-            null
+            UserResponse(null, ex.message)
         }
     }
 
-    override fun logout() {
+    fun logout() {
         firebaseAuth.signOut()
     }
 }

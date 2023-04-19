@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.databinding.FragmentLoginBinding
 import com.codingtester.textrecognizer.view.main.MainActivity
 import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
@@ -27,19 +26,20 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
-        binding = FragmentLoginBinding.bind(view)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         binding.btnLogin.setOnClickListener { login() }
 
-        viewModel.loginLiveData.observe(viewLifecycleOwner) {
-            if(it != null) {
+        // make observe on (mutable live data) to listen of data when he come to our screen
+        // or any change happened on data
+        viewModel.loginLiveData.observe(viewLifecycleOwner) { userResponse ->
+            if(userResponse?.firebaseUser != null) {
                 requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
                 requireActivity().finish()
             } else {
                 binding.btnLogin.visibility = View.VISIBLE
                 binding.progress.visibility = View.GONE
-                Toast.makeText(requireContext(), "Something wrong! please try again", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), userResponse?.errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
         return binding.root

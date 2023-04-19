@@ -10,13 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.data.pojo.Note
 
-
+/**
+ * adapter to set all notes when comes from firebase in recycler view
+ */
 class NoteAdapter(private val onClickBoard: OnClickNote): RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
     private var noteList: List<Note> = emptyList()
     private var isLinear: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        // when change style of note adapter will change layout of view holder
         return if(isLinear) {
             ViewHolder(LayoutInflater.from(parent.context)
                 .inflate(R.layout.note_layout_linear, parent, false))
@@ -59,6 +62,7 @@ class NoteAdapter(private val onClickBoard: OnClickNote): RecyclerView.Adapter<N
         diffResult.dispatchUpdatesTo(this)
     }
 
+    // to prevent show all text character on text view (only when adapter style changed)
     private fun textFormat(text: String): String {
         return if(text.length <= 50) {
             text

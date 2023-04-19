@@ -13,6 +13,10 @@ import com.codingtester.textrecognizer.view.board.BoardAdapter.ViewHolder
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * adapter to set all boards when comes from firebase in recycler view
+ */
+
 class BoardAdapter(private val onClickBoard: OnClickBoard): RecyclerView.Adapter<ViewHolder>() {
 
     private var boardsList: List<Board> = emptyList()
@@ -50,6 +54,7 @@ class BoardAdapter(private val onClickBoard: OnClickBoard): RecyclerView.Adapter
         return formatter.format(Date(dateInMilliSecond))
     }
 
+    // update adapter when data changed
     fun updatePopularList(newBoards: List<Board>) {
         val recipeDiffUtil = BoardDiffUtil(boardsList, newBoards)
         val diffResult = DiffUtil.calculateDiff(recipeDiffUtil)

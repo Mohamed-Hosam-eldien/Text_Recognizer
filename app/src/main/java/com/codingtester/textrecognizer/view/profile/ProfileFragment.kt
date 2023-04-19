@@ -10,9 +10,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.databinding.FragmentProfileBinding
-import com.codingtester.textrecognizer.view.register.LoginActivity
+import com.codingtester.textrecognizer.view.register.WelcomeActivity
 import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
+/**
+ * this screen to show user data and logout from the application
+ */
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -43,8 +47,9 @@ class ProfileFragment : Fragment() {
             .setTitle("Logout!")
             .setMessage("Are you sure you want to log out from the app?")
             .setPositiveButton("Yes") { _,_ ->
+                // when user logout we will clos all screens and open welcome screen only
                 viewModel.logout()
-                requireActivity().startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                requireActivity().startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                 requireActivity().finish()
             }
             .setNegativeButton("Cancel") {dialog,_ ->

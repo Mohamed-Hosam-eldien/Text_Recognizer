@@ -25,7 +25,6 @@ class BoardFragment : Fragment(), OnClickBoard {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         dataViewModel.getAllBoards()
     }
 
@@ -48,6 +47,8 @@ class BoardFragment : Fragment(), OnClickBoard {
             adapter = boardAdapter
         }
 
+        // make observe on (mutable live data) to listen of data when he come to our screen
+        // or any change happened on data
         dataViewModel.boardsLiveData.observe(viewLifecycleOwner) { boards ->
             if(boards.isEmpty()) {
                 binding.recyclerBoard.visibility = View.GONE
@@ -56,8 +57,8 @@ class BoardFragment : Fragment(), OnClickBoard {
             } else {
                 binding.recyclerBoard.visibility = View.VISIBLE
                 binding.imgEmpty.visibility = View.GONE
-                boardAdapter.updatePopularList(boards)
                 binding.progress.visibility = View.GONE
+                boardAdapter.updatePopularList(boards)
             }
         }
     }
@@ -67,6 +68,7 @@ class BoardFragment : Fragment(), OnClickBoard {
     }
 
     override fun onClickToBoard(board: Board) {
+        // move to note fragment
         val action = BoardFragmentDirections.actionBoardFragmentToNoteFragment(board)
         findNavController().navigate(action)
     }

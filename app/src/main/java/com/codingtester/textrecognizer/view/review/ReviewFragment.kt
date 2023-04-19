@@ -24,6 +24,7 @@ class ReviewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // get data from image when come from note fragment
         text = arguments?.getString("textAfterRec") ?: ""
         boardId = arguments?.getString("boardId") ?: ""
     }
@@ -54,6 +55,7 @@ class ReviewFragment : Fragment() {
         val note = Note(System.currentTimeMillis(), binding.edtText.text.toString(), System.currentTimeMillis())
         dataViewModel.addNewNote(boardId , note)
 
+        // after save we don't need this screen so we will close it
         findNavController().popBackStack(R.id.reviewFragment, true)
         Toast.makeText(requireContext(), "Note has been added successfully", Toast.LENGTH_LONG).show()
     }

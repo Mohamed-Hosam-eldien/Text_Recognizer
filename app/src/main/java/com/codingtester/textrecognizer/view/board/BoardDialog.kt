@@ -54,6 +54,7 @@ class BoardDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
+        // set size of width to dialog to customize it with different screens
         val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
         dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }

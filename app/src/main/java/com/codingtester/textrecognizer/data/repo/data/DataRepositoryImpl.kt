@@ -1,6 +1,5 @@
 package com.codingtester.textrecognizer.data.repo.data
 
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.codingtester.textrecognizer.data.pojo.Board
 import com.codingtester.textrecognizer.data.pojo.Note
@@ -11,12 +10,20 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import javax.inject.Inject
 
-class DataRepositoryImpl @Inject constructor() : IDataRepository {
+/**
+ * this class is repository class that responsible to handling all data
+ * with firebase like [add - delete - retrieve]
+ */
 
+class DataRepositoryImpl @Inject constructor() {
+
+    // reference for users table (user path)
     private val databaseRef = FirebaseDatabase.getInstance().getReference(Constants.USERS)
+
+    // current user id
     private val userId = Constants.currentUser.id
 
-    override suspend fun addNewBoard(board: Board) {
+    fun addNewBoard(board: Board) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -24,7 +31,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             .setValue(board)
     }
 
-    override suspend fun addNewNote(boardId: String, note: Note) {
+    fun addNewNote(boardId: String, note: Note) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -34,7 +41,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             .setValue(note)
     }
 
-    override suspend fun getAllBoards(liveData: MutableLiveData<List<Board>>) {
+    fun getAllBoards(liveData: MutableLiveData<List<Board>>) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -51,7 +58,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             })
     }
 
-    override suspend fun getNotesByBoardId(
+    fun getNotesByBoardId(
         boardId: String,
         liveData: MutableLiveData<List<Note>>
     ) {
@@ -62,6 +69,8 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             .child(Constants.NOTES)
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    // iterate on all notes and set theme in list of notes
+                    // and add list to (mutable live data)
                     val allNotes: List<Note> = snapshot.children.map { data ->
                         data.getValue(Note::class.java)!!
                     }
@@ -72,7 +81,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             })
     }
 
-    override suspend fun deleteBoard(boardId: String) {
+    fun deleteBoard(boardId: String) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -80,7 +89,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             .removeValue()
     }
 
-    override suspend fun deleteNote(boardId: String, noteId: Long) {
+    fun deleteNote(boardId: String, noteId: Long) {
         databaseRef
             .child(userId)
             .child(Constants.BOARDS)
@@ -88,6 +97,7 @@ class DataRepositoryImpl @Inject constructor() : IDataRepository {
             .child(Constants.NOTES)
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    // iterate on all notes to get note by id to delete it
                     snapshot.children.forEach {
                         val note: Note? = it.getValue(Note::class.java)
                         if(note?.id == noteId) {
