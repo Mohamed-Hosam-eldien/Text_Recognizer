@@ -196,8 +196,9 @@ class NoteFragment : Fragment(), OnClickNote {
         //process the image
         recognizer.process(inputImage).addOnSuccessListener { textAfterRecognize -> //Task completed successfully
                 navigateToReviewFragment(textAfterRecognize.text)
-            }.addOnFailureListener { e -> // Task failed with an exception
-            e.printStackTrace()
+            }.addOnFailureListener {   // Task failed with an exception
+            Toast.makeText(requireContext(), "recognition module not be downloaded," +
+                    " please update your Google Play Service on your device", Toast.LENGTH_LONG).show()
         }
     }
 

@@ -25,11 +25,9 @@ class RegisterViewModel @Inject constructor(
     private val mutableSignup: MutableLiveData<UserResponse?> = MutableLiveData()
     val signupLiveData: LiveData<UserResponse?> = mutableSignup
 
-    val currentUser get() = mainRepository.currentUser
-
     init {
         if (mainRepository.currentUser != null) {
-            mutableLogin.value?.firebaseUser = mainRepository.currentUser
+            mutableLogin.value = UserResponse(mainRepository.currentUser, "")
         }
     }
 

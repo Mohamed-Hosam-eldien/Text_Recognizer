@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.codingtester.textrecognizer.R
 import com.codingtester.textrecognizer.databinding.FragmentProfileBinding
+import com.codingtester.textrecognizer.utils.Constants
 import com.codingtester.textrecognizer.view.register.WelcomeActivity
 import com.codingtester.textrecognizer.view.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,8 +33,8 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         binding = FragmentProfileBinding.bind(view)
 
-        binding.txtEmail.text = viewModel.currentUser?.email
-        binding.txtName.text = viewModel.currentUser?.displayName
+        binding.txtEmail.text = Constants.currentUser.email
+        binding.txtName.text = Constants.currentUser.name
 
         binding.btnLogout.setOnClickListener {
             logoutFromApp()
