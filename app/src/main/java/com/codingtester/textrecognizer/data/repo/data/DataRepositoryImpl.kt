@@ -37,7 +37,7 @@ class DataRepositoryImpl @Inject constructor() {
             .child(Constants.BOARDS)
             .child(boardId)
             .child(Constants.NOTES)
-            .push()
+            .child(note.id.toString())
             .setValue(note)
     }
 
@@ -95,18 +95,7 @@ class DataRepositoryImpl @Inject constructor() {
             .child(Constants.BOARDS)
             .child(boardId)
             .child(Constants.NOTES)
-            .addValueEventListener(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    // iterate on all notes to get note by id to delete it
-                    snapshot.children.forEach {
-                        val note: Note? = it.getValue(Note::class.java)
-                        if(note?.id == noteId) {
-                            it.ref.removeValue()
-                            return@forEach
-                        }
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {}
-            })
+            .child(noteId.toString())
+            .removeValue()
     }
 }

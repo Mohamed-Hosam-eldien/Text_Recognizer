@@ -119,7 +119,7 @@ class SaveFileDialog : DialogFragment() {
     }
 
     private fun saveToWordFile(fileName: String) {
-        addParagraph(fileName, createWordDoc(), makeFileDir())
+        addParagraph(fileName, createWordDoc())
     }
 
     private fun createWordDoc(): XWPFDocument {
@@ -137,7 +137,7 @@ class SaveFileDialog : DialogFragment() {
         return file
     }
 
-    private fun addParagraph(fileName: String, targetDoc: XWPFDocument, file: File) {
+    private fun addParagraph(fileName: String, targetDoc: XWPFDocument) {
         //creating a paragraph in our document and setting its alignment
         val paragraph = targetDoc.createParagraph()
         paragraph.alignment = ParagraphAlignment.LEFT
@@ -154,7 +154,7 @@ class SaveFileDialog : DialogFragment() {
         //add a sentence break
         sentenceRun.addBreak()
 
-        saveToWordDoc(fileName, targetDoc, file)
+        saveToWordDoc(fileName, targetDoc, makeFileDir())
     }
 
     private fun saveToWordDoc(fileName: String, targetDoc: XWPFDocument, file: File) {

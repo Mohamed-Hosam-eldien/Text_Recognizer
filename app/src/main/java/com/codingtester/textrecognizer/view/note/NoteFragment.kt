@@ -84,20 +84,6 @@ class NoteFragment : Fragment(), OnClickNote {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerNotes.apply {
-            noteAdapter.updatePopularList(currentBoard.noteList, true)
-            adapter = noteAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-
-        dataViewModel.notesLiveData.observe(viewLifecycleOwner) { notes ->
-            if (notes.isEmpty()) {
-                setEmptyData()
-            } else {
-                setNotesData(notes)
-            }
-        }
-
         // when user finish crop image , image will convert to uri
         // then take this uri and pass it to function to get text from it
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract) {
@@ -112,6 +98,20 @@ class NoteFragment : Fragment(), OnClickNote {
                 cropActivityResultLauncher.launch(null)
             } else {
                 requestCameraPermission()
+            }
+        }
+
+        binding.recyclerNotes.apply {
+            noteAdapter.updatePopularList(currentBoard.noteList, true)
+            adapter = noteAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        dataViewModel.notesLiveData.observe(viewLifecycleOwner) { notes ->
+            if (notes.isEmpty()) {
+                setEmptyData()
+            } else {
+                setNotesData(notes)
             }
         }
 
@@ -188,6 +188,7 @@ class NoteFragment : Fragment(), OnClickNote {
     }
 
     private fun getTextFromBitmap(imageUri: Uri) {
+
         val inputImage = InputImage.fromFilePath(requireContext(), imageUri)
 
         //creating TextRecognizer instance

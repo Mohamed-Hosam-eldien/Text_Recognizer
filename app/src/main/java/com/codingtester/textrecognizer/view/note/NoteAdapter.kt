@@ -13,7 +13,7 @@ import com.codingtester.textrecognizer.data.pojo.Note
 /**
  * adapter to set all notes when comes from firebase in recycler view
  */
-class NoteAdapter(private val onClickBoard: OnClickNote): RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+class NoteAdapter(private val onClickNote: OnClickNote): RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
     private var noteList: List<Note> = emptyList()
     private var isLinear: Boolean = true
@@ -40,11 +40,11 @@ class NoteAdapter(private val onClickBoard: OnClickNote): RecyclerView.Adapter<N
         }
 
         holder.clickToSave?.setOnClickListener {
-            onClickBoard.onClickToSaveFile(note)
+            onClickNote.onClickToSaveFile(note)
         }
 
         holder.clickToDelete?.setOnClickListener {
-            onClickBoard.onClickToDelete(note.id)
+            onClickNote.onClickToDelete(note.id)
         }
     }
 

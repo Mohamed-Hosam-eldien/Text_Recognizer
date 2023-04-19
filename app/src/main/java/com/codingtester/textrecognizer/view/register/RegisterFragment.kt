@@ -45,12 +45,7 @@ class RegisterFragment : Fragment() {
                     response.firebaseUser!!.displayName,
                     response.firebaseUser!!.email
                 )
-                requireActivity().startActivity(
-                    Intent(
-                        requireActivity(),
-                        MainActivity::class.java
-                    )
-                )
+                requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
                 requireActivity().finish()
             } else {
                 binding.btnCreateAccount.visibility = View.VISIBLE
