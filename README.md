@@ -20,10 +20,10 @@ an app that allows you to scan any writing text by camera, convert it to text in
 
 # 𝑻𝒐𝒐𝒍𝒔
 - **Kotlin**
-- **Coroutines with Flows**
+- **Coroutines**
 - **Jetpack Compose**
 - **Hilt**
-- **Room Database**
+- **Apache.PO**
 - **Clean Architecture**
 # Architecture 
 This app uses **MVVM (Model View View-Model)** architecture.
