@@ -22,6 +22,7 @@ an app that allows you to scan any writing text by camera, convert it to text in
 - **Kotlin**
 - **Coroutines**
 - **Jetpack Compose**
+- **Firebase**
 - **Hilt**
 - **Apache.PO**
 - **Clean Architecture**
